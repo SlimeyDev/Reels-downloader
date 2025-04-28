@@ -1,0 +1,4 @@
+instaloader==4.14.1
+colorama==0.4.6
+tqdm==4.66.1
+ffmpeg-python==0.2.0
