@@ -218,7 +218,7 @@ def join_videos():
         print_info(f"Found {len(mp4_files)} videos to join.")
         
         # Use fixed name for combined video
-        output_file = download_dir / "combined_video.mp4"
+        output_file = download_dir / "compilation.mp4"
         
         # Build the ffmpeg command
         cmd = ["ffmpeg"]
