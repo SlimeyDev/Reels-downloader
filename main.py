@@ -66,7 +66,7 @@ def login_to_instagram():
                     continue
                 else:
                     print_info("Using credentials from .env file.")
-                    print(f"Username: {username}, Password: {password}")
+                    print_warning(f"Username: {username}, Password: {password}")
             elif y == "2":
                 username = input(f"{Fore.CYAN}Enter your Instagram username: {Style.RESET_ALL}")
                 password = getpass.getpass(f"{Fore.CYAN}Enter your Instagram password: {Style.RESET_ALL}")
