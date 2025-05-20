@@ -10,6 +10,10 @@ import subprocess
 import sys
 from colorama import init, Fore, Style
 import tqdm
+import dotenv
+
+
+dotenv.load_dotenv()
 
 # Initialize colorama
 init()
@@ -47,37 +51,40 @@ def clean_downloads_folder():
 
 def login_to_instagram():
     L = instaloader.Instaloader()
-    session_file = Path("instagram_session")
-    
-    try:
-        # Try to load session from file
-        if session_file.exists():
-            L.load_session_from_file("instagram_session")
-            print_success("Successfully loaded existing session.")
-            return L
-    except Exception as e:
-        print_warning("Session file invalid or expired. Please log in again.")
     
     print_info("Please log in to Instagram.")
     max_attempts = 3
     for attempt in range(max_attempts):
         try:
-            username = input(f"{Fore.CYAN}Enter your Instagram username: {Style.RESET_ALL}")
-            password = getpass.getpass(f"{Fore.CYAN}Enter your Instagram password: {Style.RESET_ALL}")
+            y = str(input(f"{Fore.CYAN}login using .env file or custom credentials (1/2): {Style.RESET_ALL}"))
+            if y == "1":
+                # Load credentials from .env file
+                username = os.getenv("INSTAGRAM_USERNAME")
+                password = os.getenv("INSTAGRAM_PASSWORD")
+                if not username or not password:
+                    print_error("Credentials not found in .env file. Please set INSTAGRAM_USERNAME and INSTAGRAM_PASSWORD.")
+                    continue
+                else:
+                    print_info("Using credentials from .env file.")
+                    print(f"Username: {username}, Password: {password}")
+            elif y == "2":
+                username = input(f"{Fore.CYAN}Enter your Instagram username: {Style.RESET_ALL}")
+                password = getpass.getpass(f"{Fore.CYAN}Enter your Instagram password: {Style.RESET_ALL}")
+            else:
+                print_error("Invalid choice. Please enter 1 or 2.")
+                continue
             
-            # Add a small delay before login attempt
             time.sleep(1)
             
             L.login(username, password)
-            # Save session for future use
-            L.save_session_to_file("instagram_session")
+
             print_success("Successfully logged in and saved session.")
             return L
         except instaloader.exceptions.InstaloaderException as e:
             print_error(f"Login attempt {attempt + 1} failed: {str(e)}")
             if attempt < max_attempts - 1:
                 print_info("Please try again...")
-                time.sleep(2)  # Wait before next attempt
+                time.sleep(2)
             else:
                 print_error("Maximum login attempts reached. Please check your credentials and try again later.")
                 return None

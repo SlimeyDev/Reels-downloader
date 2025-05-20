@@ -46,7 +46,6 @@ A Python application that downloads Instagram reels and combines them into a sin
 
 - The program will create a `downloads` folder for storing downloaded videos
 - The final combined video will be saved as `combined_video.mp4` in the downloads folder
-- Instagram session is saved locally for future use
 - Rate limiting may occur if downloading too many videos at once
 
 ## Troubleshooting
